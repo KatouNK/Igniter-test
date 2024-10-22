@@ -1,5 +1,5 @@
 
-# CodeIgniter 4 Project
+# How to run this program
 
 This is a CodeIgniter 4 project repository. Below are the steps to set up the project and get it running.
 
