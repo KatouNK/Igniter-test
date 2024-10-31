@@ -1,17 +1,18 @@
 <?php
 
+use App\Controllers\feedback;
 use CodeIgniter\Router\RouteCollection;
 
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Home::index');
-$routes->get('login', 'AuthController::login');
-$routes->get('register', 'AuthController::register');
-$routes->post('auth/storeUser', 'AuthController::storeUser');
-$routes->post('auth/loginUser', 'AuthController::loginUser');
-$routes->get('logout', 'AuthController::logout');
 
-$routes->get('dashboard', 'DashboardController::index');
-$routes->get('about', 'AboutController::index');
+$routes->get('feedback', 'Feedback::feedback');
+$routes->post('feedback/submitFeedback', 'Feedback::submitFeedback');
+
+$routes->get('feedback-table', 'Feedback::tampilfeedback');
+$routes->get('events', 'EventController::index');
+
+
+
 
