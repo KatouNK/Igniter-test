@@ -3,94 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Create an account</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <style>
-        /* Reset browser default styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        /* Body styling */
         body {
-            background-color: #f7f7f7;
+            background-color: #f8f9fa;
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
         }
-
-        /* Container for form */
-        .form-container {
-            background-color: white;
-            padding: 2rem;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+        
+        .signup-card {
             max-width: 400px;
             width: 100%;
+            margin: auto;
         }
 
-        /* Form title styling */
-        .form-container h1 {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            font-size: 24px;
-            color: #333;
-        }
-
-        /* Form input field styling */
-        .form-container input {
-            width: 100%;
-            padding: 0.75rem;
-            margin-bottom: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-
-        /* Submit button styling */
-        .form-container button {
-            width: 100%;
-            padding: 0.75rem;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
+        .password-toggle {
             cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
         }
 
-        /* Button hover effect */
-        .form-container button:hover {
-            background-color: #45a049;
+        .password-container {
+            position: relative;
         }
 
-        /* Optional: Link styling */
-        .form-container a {
-            text-decoration: none;
-            color: #4CAF50;
-            display: block;
-            text-align: center;
-            margin-top: 1rem;
+        .form-control {
+            padding: 0.75rem 1rem;
         }
 
-        .form-container a:hover {
-            text-decoration: underline;
+        .btn-create {
+            background-color: #999;
+            border: none;
+            padding: 0.75rem;
+            color: white;
+        }
+
+        .btn-create:hover {
+            background-color: #888;
+            color: white;
+        }
+
+        .password-hint {
+            font-size: 0.875rem;
+            color: #6c757d;
         }
     </style>
 </head>
 <body>
-    <div class="form-container">
-        <h1>Register</h1>
-        <form method="post" action="/auth/storeUser">
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit">Register</button>
-            <a href="/login">Already have an account? Login here</a>
-        </form>
+    <div class="container">
+        <div class="signup-card">
+            <div class="card shadow">
+            <div class="card-body p-4">
+            <div class="text-center mb-4">
+                <h2 class="mb-2">Create an account</h2>
+                <p class="text-muted">Already have an account? <a href="#" onclick="handleLogin()" class="text-decoration-none">Log in</a></p>
+            </div>
+            
+            <form id="signupForm" action="<?= base_url('/auth/storeUser') ?>" method="post">
+                <!-- NIM Input -->
+                <div class="mb-3">
+                    <label for="nim" class="form-label">NIM</label>
+                    <input type="text" class="form-control" id="nim" name="nim" placeholder="Enter your NIM" required>
+                </div>
+
+                <!-- Password Input -->
+                <div class="mb-2">
+                    <label for="password" class="form-label">Create a password</label>
+                    <div class="password-container">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required minlength="8">
+                        <i class="bi bi-eye-slash password-toggle" id="togglePassword"></i>
+                    </div>
+                </div>
+
+                <!-- Password Hint -->
+                <div class="mb-4">
+                    <small class="password-hint">
+                        Use 8 or more characters with a mix of letters, numbers & symbols
+                    </small>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-create w-100 rounded-3">Create an account</button>
+                </div>
+                </div>
+            </form>
+        </div>
     </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Toggle password visibility
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = this;
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('bi-eye-slash');
+                toggleIcon.classList.add('bi-eye');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('bi-eye');
+                toggleIcon.classList.add('bi-eye-slash');
+            }
+        });
+
+        // Handle login
+        function handleLogin() {
+            window.location.href = '<?= base_url('/login') ?>';
+        }
+    </script>
 </body>
 </html>

@@ -3,107 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login Page</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <style>
-        /* Reset browser default styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        /* Body styling */
         body {
-            background-color: #f7f7f7;
+            background-color: #f8f9fa;
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
         }
-
-        /* Container for form */
-        .form-container {
-            background-color: white;
-            padding: 2rem;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+        
+        .login-card {
             max-width: 400px;
             width: 100%;
+            margin: auto;
         }
 
-        /* Form title styling */
-        .form-container h1 {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            font-size: 24px;
-            color: #333;
-        }
-
-        /* Form input field styling */
-        .form-container input {
-            width: 100%;
-            padding: 0.75rem;
-            margin-bottom: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-
-        /* Submit button styling */
-        .form-container button {
-            width: 100%;
-            padding: 0.75rem;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
+        .password-toggle {
             cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
-        /* Button hover effect */
-        .form-container button:hover {
-            background-color: #45a049;
-        }
-
-        /* Optional: Error message styling */
-        .error-message {
-            color: red;
-            font-size: 14px;
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-
-        /* Optional: Link styling */
-        .form-container a {
-            text-decoration: none;
-            color: #4CAF50;
-            display: block;
-            text-align: center;
-            margin-top: 1rem;
-        }
-
-        .form-container a:hover {
-            text-decoration: underline;
+        .password-container {
+            position: relative;
         }
     </style>
 </head>
+
 <body>
-    <div class="form-container">
-        <h1>Login</h1>
-        <form method="post" action="/auth/loginUser">
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit">Login</button>
-            <a href="/register">Don't have an account? Register here</a>
-        </form>
-        <!-- Optional error message -->
-        <?php if (session()->getFlashdata('fail')): ?>
-            <div class="error-message">
-                <?= session()->getFlashdata('fail') ?>
+    <div class="container">
+        <div class="login-card">
+            <div class="card shadow">
+                <div class="card-body p-4">
+                    <h3 class="card-title text-center mb-4">Log in</h3>
+                    
+                    <form id="loginForm" action="<?=base_url('/auth/loginUser')?>" method="post">
+                    <?php if (session()->getFlashdata('error')) : ?>
+                    <div class="alert alert-danger">
+                    <?= session()->getFlashdata('error') ?>
+                    </div>
+                    <?php endif; ?>
+                        <!-- NIM Input -->
+                        <div class="mb-3">
+                            <label for="nim" class="form-label">NIM</label>
+                            <input type="text" class="form-control" id="nim" name="nim" required>
+                        </div>
+
+                        <!-- Username Input -->
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="password-container">
+                                <input type="password" class="form-control" id="password" name="password" required>
+                                <i class="bi bi-eye-slash password-toggle" id="togglePassword"></i>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                                <label class="form-check-label" for="remember">Remember me</label>
+                            </div>
+                        </div>
+
+                        <!-- Login Button -->
+                        <button type="submit" class="btn btn-secondary w-100 mb-3">Log in</button>
+                    </form>
+
+                    <!-- Sign Up Button -->
+                    <div class="text-center">
+                        <p class="mb-2">Don't have an account?</p>
+                        <button class="btn btn-outline-secondary w-100" onclick="handleSignup()">Sign up</button>
+                    </div>
+                </div>
             </div>
-        <?php endif; ?>
+        </div>
     </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = this;
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('bi-eye-slash');
+                toggleIcon.classList.add('bi-eye');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('bi-eye');
+                toggleIcon.classList.add('bi-eye-slash');
+            }
+        });
+
+        function handleSignup() {
+            window.location.href = '/register';
+        }
+    </script>
 </body>
 </html>
