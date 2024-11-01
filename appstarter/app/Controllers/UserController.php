@@ -17,20 +17,17 @@ class UserController extends Controller
         $this->pendaftaranEventModel = new PendaftaranEventModel();
     }
 
-    /**
-     * Display the user dashboard with a list of registered events.
-     */
     public function dashboard()
     {
-        $user = session()->get('user');
+        $nim = session()->get('user')['nim']; // Ambil NIM dari user yang login
 
-        if (!$user || $user['role'] !== 'user') {
-            return redirect()->to('/login')->with('fail', 'Please login as a user.');
-        }
+        // Ambil data event berdasarkan pendaftaran yang dilakukan oleh user (menggabungkan tabel events dan pendaftaran_event)
+        $events = $this->pendaftaranEventModel
+            ->select('events.title, events.description, events.status')
+            ->join('events', 'pendaftaran_event.event_id = events.id')
+            ->where('pendaftaran_event.nim', $nim)
+            ->findAll();
 
-        // Fetch events that the user has registered for, based on NIM
-        $data['registeredEvents'] = $this->pendaftaranEventModel->where('nim', $user['nim'])->findAll();
-
-        return view('Views/dashboard', $data);
+        return view('Views/dashboard', ['events' => $events]);
     }
 }
