@@ -2,30 +2,24 @@
 
 namespace Config;
 
-use CodeIgniter\Config\Filters as BaseFilters;
-use CodeIgniter\Filters\Cors;
-use CodeIgniter\Filters\CSRF;
+use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Filters\DebugToolbar;
-use CodeIgniter\Filters\ForceHTTPS;
 use CodeIgniter\Filters\Honeypot;
 use CodeIgniter\Filters\InvalidChars;
+use CodeIgniter\Filters\SecureHeaders;
+use CodeIgniter\Filters\ForceHTTPS;
 use CodeIgniter\Filters\PageCache;
 use CodeIgniter\Filters\PerformanceMetrics;
-use CodeIgniter\Filters\SecureHeaders;
+use CodeIgniter\Filters\Cors;
 
-class Filters extends BaseFilters
+class Filters extends BaseConfig
 {
     /**
-     * Configures aliases for Filter classes to
-     * make reading things nicer and simpler.
+     * Aliases for filter classes to make reading and applying them simpler.
      *
-     * @var array<string, class-string|list<class-string>>
-     *
-     * [filter_name => classname]
-     * or [filter_name => [classname1, classname2, ...]]
+     * @var array
      */
-    public array $aliases = [
-        'csrf'          => CSRF::class,
+    public $aliases = [
         'toolbar'       => DebugToolbar::class,
         'honeypot'      => Honeypot::class,
         'invalidchars'  => InvalidChars::class,
@@ -37,71 +31,33 @@ class Filters extends BaseFilters
     ];
 
     /**
-     * List of special required filters.
+     * Global filters that are applied before and after every request.
      *
-     * The filters listed here are special. They are applied before and after
-     * other kinds of filters, and always applied even if a route does not exist.
+     * CSRF is omitted here to disable it across the entire application.
      *
-     * Filters set by default provide framework functionality. If removed,
-     * those functions will no longer work.
-     *
-     * @see https://codeigniter.com/user_guide/incoming/filters.html#provided-filters
-     *
-     * @var array{before: list<string>, after: list<string>}
+     * @var array
      */
-    public array $required = [
+    public $globals = [
         'before' => [
-            'forcehttps', // Force Global Secure Requests
-            'pagecache',  // Web Page Caching
+            // CSRF protection is disabled
         ],
         'after' => [
-            'pagecache',   // Web Page Caching
-            'performance', // Performance Metrics
-            'toolbar',     // Debug Toolbar
+            'toolbar',
+            'honeypot',
         ],
     ];
 
     /**
-     * List of filter aliases that are always
-     * applied before and after every request.
+     * Filters that are applied based on the HTTP method (GET, POST, etc.).
      *
-     * @var array<string, array<string, array<string, string>>>|array<string, list<string>>
+     * @var array
      */
-    public array $globals = [
-        'before' => [
-            // 'honeypot',
-            // 'csrf',
-            // 'invalidchars',
-        ],
-        'after' => [
-            // 'honeypot',
-            // 'secureheaders',
-        ],
-    ];
+    public $methods = [];
 
     /**
-     * List of filter aliases that works on a
-     * particular HTTP method (GET, POST, etc.).
+     * Filters that run on specific URI patterns before or after.
      *
-     * Example:
-     * 'POST' => ['foo', 'bar']
-     *
-     * If you use this, you should disable auto-routing because auto-routing
-     * permits any HTTP method to access a controller. Accessing the controller
-     * with a method you don't expect could bypass the filter.
-     *
-     * @var array<string, list<string>>
+     * @var array
      */
-    public array $methods = [];
-
-    /**
-     * List of filter aliases that should run on any
-     * before or after URI patterns.
-     *
-     * Example:
-     * 'isLoggedIn' => ['before' => ['account/*', 'profiles/*']]
-     *
-     * @var array<string, array<string, list<string>>>
-     */
-    public array $filters = [];
+    public $filters = [];
 }

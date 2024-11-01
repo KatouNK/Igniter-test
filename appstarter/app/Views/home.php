@@ -196,6 +196,10 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#events">Event</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?= base_url('/Views/dashboard') ?>">Dashboard</a>
+                    </li>
+
                     <?php if (session()->has('user')): ?>
                         <li class="nav-item">
                             <a class="nav-link" href="<?= base_url('/logout') ?>">Logout</a>
