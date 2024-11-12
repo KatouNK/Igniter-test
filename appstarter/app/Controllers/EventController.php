@@ -22,9 +22,7 @@ class EventController extends Controller
      */
     public function pendaftaran_kegiatan()
     {
-        // Fetch all events for users to select from
-        $data['events'] = $this->eventModel->findAll();
-
+        $data['events'] = $this->eventModel->where('status!=', 'ongoing')->findAll();
         // Display the event registration form for users
         return view('pendaftaran_kegiatan', $data);
     }

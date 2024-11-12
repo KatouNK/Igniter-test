@@ -32,7 +32,7 @@
 
     <script>
         setTimeout(function() {
-            window.location.href = "<?= base_url('login') ?>";
+            window.location.href = "<?= base_url('home') ?>";
         }, 5000);
     </script>
 </body>

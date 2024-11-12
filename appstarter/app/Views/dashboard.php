@@ -46,6 +46,9 @@
                 <a class="nav-link text-white" href="#events">My Events</a>
             </li>
             <li class="nav-item mb-2">
+                 <a class="nav-link text-white" href="<?= base_url('home') ?>">Back To Home</a>
+            </li>
+            <li class="nav-item mb-2">
                 <a class="nav-link text-white" href="<?= base_url('/logout') ?>">Logout</a>
             </li>
         </ul>
